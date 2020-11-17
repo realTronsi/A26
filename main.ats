@@ -1,3 +1,7 @@
 @ {
-p
+  $p
+}
+p {
+  "moca & tronsi is gay"
+  "two strings"
 }

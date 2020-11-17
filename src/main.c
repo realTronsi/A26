@@ -15,6 +15,6 @@ int main(int args, char* argv[])
     }
   char* code = read_file(argv[1]);
   Lexer_* lexer = lexer_init(code);
-  Parser_* parser = parser_init(lexer_init(code));
+  Parser_* parser = parser_init(lexer);
   SyntaxTree_* tree = parse(parser);
 }

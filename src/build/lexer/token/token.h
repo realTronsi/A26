@@ -7,12 +7,19 @@
 typedef struct Token {
   enum {
     UD,
-    P_REG,
-    GLB_REG,
-    L_BR,
-    R_BR,
+    P_REG, //p
+    GLB_REG, //@
+    D_REG, // d
+    L_BR, // {
+    R_BR, // }
+    L_BK, // [
+    R_BK, // ]
+    REF, // $
+    UD_VAL, // value after #
+    NUM, //number
+    STR,
     comma,
-    EOF,
+    Eof,
   } type;
   char* val;
 } Token_;
