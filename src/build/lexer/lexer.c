@@ -2,12 +2,12 @@
 
 //init
 Lexer_* lexer_init(char* source){
-  Lexer_* lexer = calloc(1, sizeof(lexer)*2);
+  Lexer_* lexer = calloc(1, sizeof(lexer));
   lexer->source = source;
   lexer->line = 1;
   lexer->index = 0;
   lexer->curr_char = lexer->source[lexer->index];
-  lexer->Extra = calloc(1,sizeof(*lexer->Extra)*2);
+  lexer->Extra = calloc(1,sizeof(*lexer->Extra));
   lexer->Extra->index_number = -1;
   lexer->Extra->found_string = -1;
 
@@ -38,7 +38,7 @@ Token_* tokenize(Lexer_* lexer, char* val, int token_id)
 
 char* convert_to_str(char char_)
 {
-  char* str = calloc(2,sizeof(*str)*2);
+  char* str = calloc(2,sizeof(*str)*5);
   str[0] = char_;
   str[1] = '\0';
   return str;
@@ -46,13 +46,13 @@ char* convert_to_str(char char_)
 
 char* get_number(Lexer_* lexer)
 {
-  char* number = calloc(1,sizeof(*number)*2);
+  char* number = calloc(1,sizeof(*number));
   do {
     char* curr = convert_to_str(lexer->curr_char);
 
     number = realloc(
       number,
-      (strlen(number)+strlen(curr)+1)*sizeof(*number)*2
+      (strlen(number)+strlen(curr)+1)*sizeof(*number)
     );
     strcat(number,curr);
 
@@ -72,7 +72,7 @@ char* get_value(Lexer_* lexer)
 
     str = realloc(
       str,
-      (strlen(str)+strlen(curr)+1)*sizeof(*str)*2
+      (strlen(str)+strlen(curr)+1)*sizeof(*str)
     );
     strcat(str,curr);
 
@@ -94,7 +94,7 @@ char* get_str(Lexer_* lexer)
 
     str = realloc(
       str,
-      (strlen(str)+strlen(curr)+1)*sizeof(*str)*2
+      (strlen(str)+strlen(curr)+2)*sizeof(*str)
     );
     strcat(str,curr);
     
@@ -174,13 +174,11 @@ Token_* next_token(Lexer_* lexer){
       break;
     }
 
-    //if(isalnum(lexer->curr_char)) // hmm
-    //{
-    //  char* value = get_value(lexer);
-    //  return token_init(value, UD_VAL);
-    //}
-
-    //attnetion, commenting out the get_value did not work which means probably contents of get_str is wrong maybe
+    if(isalnum(lexer->curr_char)) // hmm
+    {
+      char* value = get_value(lexer);
+      return token_init(value, UD_VAL);
+    }
     
     next_char(lexer);
   } while (1);
