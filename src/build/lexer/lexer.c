@@ -2,26 +2,25 @@
 
 //init
 Lexer_* lexer_init(char* source){
-  Lexer_* lexer = calloc(1, sizeof(lexer));
+  Lexer_* lexer = calloc(1, sizeof(lexer)*2);
   lexer->source = source;
   lexer->line = 1;
   lexer->index = 0;
   lexer->curr_char = lexer->source[lexer->index];
-  lexer->Extra = calloc(1,sizeof(*lexer->Extra));
+  lexer->Extra = calloc(1,sizeof(*lexer->Extra)*2);
   lexer->Extra->index_number = -1;
+  lexer->Extra->found_string = -1;
 
   return lexer;
 }
 
 //next char
-Lexer_* next_char(Lexer_* lexer){
+void next_char(Lexer_* lexer){
   if(lexer->curr_char != '\0' && lexer->index<strlen(lexer->source))
   {
     lexer->index++;
     lexer->curr_char = lexer->source[lexer->index];
   }
-
-  return lexer;
 }
 
 //skip space
@@ -39,7 +38,7 @@ Token_* tokenize(Lexer_* lexer, char* val, int token_id)
 
 char* convert_to_str(char char_)
 {
-  char* str = calloc(2,sizeof(*str));
+  char* str = calloc(2,sizeof(*str)*2);
   str[0] = char_;
   str[1] = '\0';
   return str;
@@ -47,13 +46,13 @@ char* convert_to_str(char char_)
 
 char* get_number(Lexer_* lexer)
 {
-  char* number = calloc(1,sizeof(*number));
+  char* number = calloc(1,sizeof(*number)*2);
   do {
     char* curr = convert_to_str(lexer->curr_char);
 
     number = realloc(
       number,
-      (strlen(number)+strlen(curr)+1)*sizeof(*number)
+      (strlen(number)+strlen(curr)+1)*sizeof(*number)*2
     );
     strcat(number,curr);
 
@@ -73,33 +72,34 @@ char* get_value(Lexer_* lexer)
 
     str = realloc(
       str,
-      (strlen(str)+strlen(curr)+1)*sizeof(*str)
+      (strlen(str)+strlen(curr)+1)*sizeof(*str)*2
     );
     strcat(str,curr);
 
     next_char(lexer);
   } while(1);
+
+  next_char(lexer);
 
   return str; // should return the number :D
   // lets try it
 }
 
-char* get_str(Lexer_* lexer){
+char* get_str(Lexer_* lexer)
+{
   char* str = calloc(1,sizeof(*str));
-  do {
-    if(lexer->curr_char == '"') break;
+  while(lexer->curr_char != '"')
+  {
     char* curr = convert_to_str(lexer->curr_char);
 
     str = realloc(
       str,
-      (strlen(str)+strlen(curr)+1)*sizeof(*str)
+      (strlen(str)+strlen(curr)+1)*sizeof(*str)*2
     );
     strcat(str,curr);
-
+    
     next_char(lexer);
-  } while(1);
-
-  next_char(lexer); //skip 
+  }
 
   return str;
 }
@@ -132,9 +132,10 @@ Token_* next_token(Lexer_* lexer){
       
       if(isdigit(lexer->curr_char))
       {
-        token_init(get_number(lexer), NUM); // there we go
+        return token_init(get_number(lexer), NUM); // there we go
+        break;
       }
-        
+      
     switch(lexer->curr_char){
       case 'p': {
         if(peek(lexer, 1)=='['){
@@ -144,26 +145,28 @@ Token_* next_token(Lexer_* lexer){
             exit(EXIT_FAILURE);
           }
           
-          return tokenize(lexer, "p", P_REG);
+          return tokenize(lexer, "p", P_REG);break;
         }
-        return tokenize(lexer, "p", P_REG);
+        return tokenize(lexer, "p", P_REG);break;
       }
-      case '@':return tokenize(lexer,"@",GLB_REG);
-      case 'd':return tokenize(lexer,"d",D_REG); // added this.
-      case '{':return tokenize(lexer,"{",L_BR);
-      case '}':return tokenize(lexer,"}",R_BR);
-      case '[':return tokenize(lexer,"[",L_BK);
-      case ']':return tokenize(lexer,"]",R_BK);
-      case '$':return tokenize(lexer,"$",REF);
-      case ',':return tokenize(lexer,",",comma);
-      case '#':return tokenize(lexer,"#",UD);
-      case '"':{
-        next_char(lexer); // skips the first one
-        return token_init(get_str(lexer),STR);
-      }
+      case '@':return tokenize(lexer,"@",GLB_REG);break;
+      //case 'd':return tokenize(lexer,"d",D_REG); // added this.
+      case '{':return tokenize(lexer,"{",L_BR);break;
+      case '}':return tokenize(lexer,"}",R_BR);break;
+      case '[':return tokenize(lexer,"[",L_BK);break;
+      case ']':return tokenize(lexer,"]",R_BK);break;
+      case '$':return tokenize(lexer,"$",REF);break;
+      case ',':return tokenize(lexer,",",comma);break;
+      case '#':return tokenize(lexer,"#",UD);break;
       case '\n': {
         lexer->line++;
         next_char(lexer);goto top;
+      }
+      case '"':
+      {
+        next_char(lexer);
+        return tokenize(lexer,get_str(lexer),STR);
+        break;
       }
       default: break; 
     }
@@ -171,11 +174,14 @@ Token_* next_token(Lexer_* lexer){
       break;
     }
 
-    if(isalnum(lexer->curr_char)) // hmm
-      {
-        char* value = get_value(lexer);
-        return token_init(value, UD_VAL);
-      }
+    //if(isalnum(lexer->curr_char)) // hmm
+    //{
+    //  char* value = get_value(lexer);
+    //  return token_init(value, UD_VAL);
+    //}
+
+    //attnetion, commenting out the get_value did not work which means probably contents of get_str is wrong maybe
+    
     next_char(lexer);
   } while (1);
 

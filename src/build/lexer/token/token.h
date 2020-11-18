@@ -17,6 +17,7 @@ typedef struct Token {
     REF, // $
     UD_VAL, // value after #
     NUM, //number
+    DQ, // Double Quotes
     STR,
     comma,
     Eof,

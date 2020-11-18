@@ -2,7 +2,7 @@
 
 char* read_file(char* filename){
   FILE *file = fopen(filename, "rb");
-  char* code = calloc(1,sizeof(*code));
+  char* code = calloc(1,sizeof(*code)*2);
 
   if(file){
       fseek(file, 0, SEEK_END);
@@ -15,6 +15,6 @@ char* read_file(char* filename){
       }
   }
   
-  fprintf(stderr,"error");
+  fprintf(stderr,"\nThe file %s does not exist\n",filename);
   exit(EXIT_FAILURE);
 }

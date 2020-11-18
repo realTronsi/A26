@@ -15,6 +15,7 @@ typedef struct Lexer {
 
   struct {
     int index_number;
+    int found_string;
   } *Extra;
 } Lexer_;
 

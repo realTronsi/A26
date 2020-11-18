@@ -2,8 +2,8 @@
 #define AST
 
 #include <stdio.h>
-#include "../../lexer/token/token.h"
 #include "../../../lib/blist/blist.h"
+#include "../../lexer/token/token.h"
 
 typedef struct SyntaxTree {
   enum {

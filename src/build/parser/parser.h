@@ -12,6 +12,7 @@ typedef struct Parser {
 } Parser_;
 
 #include "glb_reg.h"
+#include "p_reg.h"
 
 Parser_* parser_init(Lexer_* lexer);
 void parse_token(Parser_* parser, int expected);
