@@ -14,8 +14,8 @@ char* read_file(char* filename){
           code,
           size*sizeof(*code)
         );
-          fread(code,1,size,file);
-          return code;
+        fread(code,1,size,file);
+        return code;
       }
   }
   

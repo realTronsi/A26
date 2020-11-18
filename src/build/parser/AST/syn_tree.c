@@ -8,9 +8,14 @@ SyntaxTree_* syn_tree_init(int id){
     tree->trees = calloc(1,sizeof(*tree->trees)*15);
     tree->l_of_trees = 0;
 
-    tree->p_reg = calloc(1,sizeof(*tree->p_reg)*15);
+    // P_REG
+    tree->p_reg =  blist_init();
+
+    // GLOBAL
     tree->global_return = 0;
     tree->global_exists = -1;
+    tree->p_references_indexes = blist_init();
+    tree->d_references_indexes = blist_init();
     
     return tree;
 }

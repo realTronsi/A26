@@ -15,11 +15,28 @@ SyntaxTree_* parse_glb_reg(Parser_* parser){
       {
         case P_REG:
         {
-          parse_token(parser, P_REG);
-          if(parser->curr_token->type == L_BR){
-            parse_token(parser, L_BR);
-            parse_token(parser, NUM); //expecting number
-            //now we can do syntax tree stuff to reference to it right?
+          parse_token(parser, P_REG); // I think what I did is pretty self explanatory.
+          // I added a check to see if our current token is [ and if it is then we continue onward
+          // then, I appended the token value(which should be the index), into the p_references_indexes blist.
+          if(parser->curr_token->type == L_BK){
+            parse_token(parser,L_BK); // [
+            // I added this just to be safe. Just in case the user puts something else other than a index number..
+            // you can delete it if you feel as if it is useless!
+            if(parser->curr_token->type == NUM){
+              blist_append(tree->p_references_indexes,parser->curr_token->val);
+              parse_token(parser, NUM);
+            }
+            else
+            {
+              fprintf(stderr,"\nExpecting index number.\n");
+              exit(EXIT_FAILURE);
+            }
+            parse_token(parser,  R_BK); // ]
+          }
+          else
+          {
+            fprintf(stderr,"\nExpecting index number.\n");
+            exit(EXIT_FAILURE);
           }
           
           if(parser->curr_token->type == R_BR) goto end;
