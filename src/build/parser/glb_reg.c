@@ -15,13 +15,9 @@ SyntaxTree_* parse_glb_reg(Parser_* parser){
       {
         case P_REG:
         {
-          parse_token(parser, P_REG); // I think what I did is pretty self explanatory.
-          // I added a check to see if our current token is [ and if it is then we continue onward
-          // then, I appended the token value(which should be the index), into the p_references_indexes blist.
+          parse_token(parser, P_REG); 
           if(parser->curr_token->type == L_BK){
-            parse_token(parser,L_BK); // [
-            // I added this just to be safe. Just in case the user puts something else other than a index number..
-            // you can delete it if you feel as if it is useless!
+            parse_token(parser,L_BK); 
             if(parser->curr_token->type == NUM){
               blist_append(tree->p_references_indexes,parser->curr_token->val);
               parse_token(parser, NUM);
@@ -49,15 +45,14 @@ SyntaxTree_* parse_glb_reg(Parser_* parser){
         }
       }
 
-      //if(parser->curr_token->type == R_BR) goto end;
-      //goto redo;
+      if(parser->curr_token->type == L_BR) goto end;
+      goto redo;
     }
     case UD:
     {
       fprintf(stderr,"\nCannot define variables inside global register\n");
       exit(EXIT_FAILURE);
     }
-    //case R_BR: goto end;break;  this might not be needed, but lets keep it just in case. Also, I added break just in case the switch statement continued.(it's happened before)
     case GLB_REG: {
       fprintf(stderr, "SyntaxError: Redefintion of global register at line %d", parser->lexer->line);
       exit(EXIT_FAILURE);
