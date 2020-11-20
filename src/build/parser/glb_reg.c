@@ -24,15 +24,13 @@ SyntaxTree_* parse_glb_reg(Parser_* parser){
             }
             else
             {
-              fprintf(stderr,"\nExpecting index number.\n");
-              exit(EXIT_FAILURE);
+              if(parser->curr_token->type == R_BK) blist_append(tree->p_references_indexes,"all");
             }
             parse_token(parser,  R_BK); // ]
           }
           else
           {
-            fprintf(stderr,"\nExpecting index number.\n");
-            exit(EXIT_FAILURE);
+            blist_append(tree->p_references_indexes,"all");
           }
           
           if(parser->curr_token->type == R_BR) goto end;
@@ -52,6 +50,8 @@ SyntaxTree_* parse_glb_reg(Parser_* parser){
     {
       fprintf(stderr,"\nCannot define variables inside global register\n");
       exit(EXIT_FAILURE);
+
+      //why cant we define vars inside glb register again? anyways sorry I didnt code today I haven't been in the mood, I've just been sick and in pain so I will probably code tmr
     }
     case GLB_REG: {
       fprintf(stderr, "SyntaxError: Redefintion of global register at line %d", parser->lexer->line);

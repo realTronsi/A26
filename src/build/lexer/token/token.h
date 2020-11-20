@@ -6,10 +6,11 @@
 
 typedef struct Token {
   enum {
-    UD,
+    UD, // #
     P_REG, //p
     GLB_REG, //@
     D_REG, // d
+    O_REG, // o
     L_BR, // {
     R_BR, // }
     L_BK, // [

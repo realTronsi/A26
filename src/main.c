@@ -17,4 +17,5 @@ int main(int args, char* argv[])
   Lexer_* lexer = lexer_init(code);
   Parser_* parser = parser_init(lexer);
   SyntaxTree_* tree = parse(parser);
+  compile(tree);
 }

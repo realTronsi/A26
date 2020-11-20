@@ -6,7 +6,6 @@ SyntaxTree_* syn_tree_init(int id){
     tree->TokenType = id;
 
     tree->trees = calloc(1,sizeof(*tree->trees)*15);
-    tree->l_of_trees = 0;
 
     // P_REG
     tree->p_reg =  blist_init();

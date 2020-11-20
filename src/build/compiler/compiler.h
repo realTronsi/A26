@@ -4,6 +4,6 @@
 #include <stdlib.h>
 #include "../parser/AST/syn_tree.h"
 
-void compile(SyntaxTree_* tree);
+SyntaxTree_* compile(SyntaxTree_* tree);
 
 #endif
