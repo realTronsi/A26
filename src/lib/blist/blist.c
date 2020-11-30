@@ -130,7 +130,6 @@ Blist_* blist_slice(Blist_ * list, int start, int end) {
     fprintf(stderr, "\n\tIndex out of bound(%d)", start);
     exit(EXIT_FAILURE);
   }
-  int index = end + 1;
   if (start < end) {
     for (int i = end; i >= start; i--) {
       blist_append(new_list, list->values[i]);

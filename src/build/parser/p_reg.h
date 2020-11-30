@@ -4,6 +4,7 @@
 // ^ that will error btw, you gay weirdo
 #include "parser.h"
 #include "AST/syn_tree.h"
+#include "../compiler/compiler.h"
 
 SyntaxTree_* parse_p_reg(Parser_* parser);
 

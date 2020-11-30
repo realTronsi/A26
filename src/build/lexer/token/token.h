@@ -19,6 +19,8 @@ typedef struct Token {
     UD_VAL, // value after #
     NUM, //number
     DQ, // Double Quotes
+    DASH, // -
+    F_AR, // forward arrow >
     STR,
     comma,
     Eof,

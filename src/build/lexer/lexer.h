@@ -9,9 +9,11 @@
 
 typedef struct Lexer {
   char* source;
+  char* filename;
   char curr_char;
   int index;
   int line;
+  int new_line_char;
 
   struct {
     int index_number;
@@ -19,7 +21,8 @@ typedef struct Lexer {
   } *Extra;
 } Lexer_;
 
-Lexer_* lexer_init(char* source);
+Lexer_* lexer_init(char* source, char* filename);
 Token_* next_token(Lexer_* lexer);
+char* convert_to_str(char char_);
 
 #endif

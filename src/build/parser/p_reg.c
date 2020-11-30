@@ -24,27 +24,24 @@ SyntaxTree_* parse_p_reg(Parser_* parser)
             // for the hell of it.
             if(parser->curr_token->type == NUM)
             { 
-              blist_append(tree->p_references_indexes,parser->curr_token->val);
+              blist_append(tree->p_reg_values,tree->p_reg_values->values[atoi(parser->curr_token->val)]);
               parse_token(parser, NUM);
+              parse_token(parser, R_BK);
 
               if(parser->curr_token->type == R_BR) goto end;
               goto redo;
-            } else if(parser->curr_token->type == R_BK){
-              blist_append(tree->d_references_indexes,0);
-              parse_token(parser,R_BK);
             } else {
-              fprintf(stderr,"\nUnexpected token `%s` on line %d\n",parser->curr_token->val, parser->lexer->line);
-              exit(EXIT_FAILURE);
+              fprintf(stderr,"\nUnexpected token `%s`\n\t↳ %s:%d",parser->curr_token->val,parser->lexer->filename, parser->lexer->line);
+              tree->errors = 0;
             }
           } else {
-            //throw error since we're inside the p register and so we cant just loop inside forever unless you want to allow it
-            fprintf(stderr,"\nExpecting `[`\n");
-            exit(EXIT_FAILURE);
+            fprintf(stderr, "\nCannot reference entire register inside itself\n\t↳ %s:%d\n", parser->lexer->filename, parser->lexer->line);
+            tree->errors = 0;
           }
         }
         default: {
-          fprintf(stderr, "Unidentified reference %d", parser->lexer->line);
-          exit(EXIT_FAILURE);
+          fprintf(stderr, "\nUnidentified reference `%s`\n\t↳ %s:%d\n",parser->curr_token->val, parser->lexer->filename, parser->lexer->line);
+          tree->errors = 0;
         }
       }
     }
@@ -52,7 +49,8 @@ SyntaxTree_* parse_p_reg(Parser_* parser)
     {
       while(parser->curr_token->type == STR)
       {
-        blist_append(tree->p_reg, parser->curr_token->val);
+        //parse_string(parser, tree);
+        blist_append(tree->p_reg_values, parser->curr_token->val);
         parse_token(parser, STR);
       }
 
@@ -63,7 +61,7 @@ SyntaxTree_* parse_p_reg(Parser_* parser)
     {
       while(parser->curr_token->type == NUM)
       {
-        blist_append(tree->p_reg,parser->curr_token->val);
+        blist_append(tree->p_reg_values,parser->curr_token->val);
         parse_token(parser, NUM);
       }
       if(parser->curr_token->type == R_BR) goto end;
@@ -71,8 +69,9 @@ SyntaxTree_* parse_p_reg(Parser_* parser)
     }
     default:
     {
-      fprintf(stderr,"\nInvalid syntax `%s` on line %d\n",parser->curr_token->val, parser->lexer->line);
-      exit(EXIT_FAILURE);
+      if(parser->curr_token->type == R_BR) goto end;
+      fprintf(stderr,"\nInvalid syntax `%s\n\t↳ %s:%d\n",parser->curr_token->val,parser->lexer->filename,parser->lexer->line);
+      tree->errors = 0;
     }
   }
 

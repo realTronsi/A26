@@ -9,13 +9,15 @@ int main(int args, char* argv[])
 {
     if(args < 2)
     {
-        // no input file, throw error.
-        fprintf(stderr,"\ntronsi is doing great :D\n");
+        fprintf(stderr,"\nPlease provide an input file\n");
         exit(EXIT_FAILURE);
     }
-  char* code = read_file(argv[1]);
-  Lexer_* lexer = lexer_init(code);
-  Parser_* parser = parser_init(lexer);
-  SyntaxTree_* tree = parse(parser);
-  compile(tree);
+    Lexer_* lexer = lexer_init(read_file(argv[1]),argv[1]);
+    Parser_* parser = parser_init(lexer);
+    SyntaxTree_* tree = parse(parser);
+    compile(tree);
+
+    free(lexer);
+    free(parser);
+    free(tree);
 }

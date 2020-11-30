@@ -38,8 +38,8 @@ SyntaxTree_* parse_glb_reg(Parser_* parser){
         }
         default:
         {
-          fprintf(stderr,"\nError");
-          exit(EXIT_FAILURE);
+          fprintf(stderr,"\nUnexpected `%s`\n\t↳ %s:%d\n",parser->curr_token->val,parser->lexer->filename,parser->lexer->line);
+          tree->errors = 0;
         }
       }
 
@@ -48,14 +48,38 @@ SyntaxTree_* parse_glb_reg(Parser_* parser){
     }
     case UD:
     {
-      fprintf(stderr,"\nCannot define variables inside global register\n");
-      exit(EXIT_FAILURE);
+      parse_token(parser, UD);
+      if(parser->curr_token->type == UD_VAL)
+      {
+        parse_token(parser,UD_VAL);
+        if(parser->curr_token->type == DASH){
+          parse_token(parser, DASH);
 
-      //why cant we define vars inside glb register again? anyways sorry I didnt code today I haven't been in the mood, I've just been sick and in pain so I will probably code tmr
+          if(parser->curr_token->type == F_AR) // we don't know that the token would be a >, so we have to check. It could very well be that the user forgot to put a >..
+          {
+            parse_token(parser, F_AR);
+            printf("%d",parser->curr_token->type);
+            //just a question, u know how like for example UD is inside an enum in the token struct, my question is how are we able to just use it freely like this? Are all elements inside an enum global? Since the enum is inside a struct, so shouldn't we have to do like token->enum->UD instead or something like that??
+
+            // ===MOCA===
+            // You simply do not call an enum upon using the keyword enum. The enum is a part of the struct, and we initialize a new instance of the struct(the variable parser), which we can then use to refer to the name of the enum.
+
+            //ALso -> is used for pointer structs, why is our structs a pointer and not normal, bc in normal we use blah.property and I always thought C uses -> for such but it actually only uses -> when the struct is a pointer, so why is our struct a pointer???
+
+            // ===MOCA==
+            // pointers keep the information. Not having it as a pointer means the information cannot carry over to the next function. Having the struct as a pointer means we can keep the information stored throughout each function the struct is used in.
+          } else {
+            fprintf(stderr,"\nExpecting `->` for variable assignment. Missing '>'\n\t↳ %s:%d\n",parser->lexer->filename,parser->lexer->line);
+          }
+        }
+      } else {
+        fprintf(stderr,"\nExpecting a User-Defined(UD) variable name\n\t↳ %s:%d\n",parser->lexer->filename,parser->lexer->line);
+        tree->errors = 0;
+      }
     }
     case GLB_REG: {
-      fprintf(stderr, "SyntaxError: Redefintion of global register at line %d", parser->lexer->line);
-      exit(EXIT_FAILURE);
+      fprintf(stderr, "\nSyntaxError: Redefintion of global register\n\t↳ %s:%d\n",parser->lexer->filename, parser->lexer->line);
+      tree->errors = 0;
     }
     default: break;
   }

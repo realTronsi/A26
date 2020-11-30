@@ -3,6 +3,7 @@
 #include "../lexer/token/token.h"
 #include "../lexer/lexer.h"
 #include "AST/syn_tree.h"
+#include "../../lib/lish/lish.h"
 #include <stdio.h>
 
 typedef struct Parser {
@@ -17,5 +18,6 @@ typedef struct Parser {
 Parser_* parser_init(Lexer_* lexer);
 void parse_token(Parser_* parser, int expected);
 SyntaxTree_* parse(Parser_* parser);
+SyntaxTree_* parse_string(Parser_* parser, SyntaxTree_* tree);
 
 #endif

@@ -1,10 +1,6 @@
 @ {
-  $p[]
-  $p[]
+  $p
 }
 p {
-  "Yo"
-  "Bro"
-  "IT WORKS NOW YEEEHAWWW"
-  13
+  "hi\nhi\nhi\n\n\n\n"
 }
