@@ -74,6 +74,7 @@ SyntaxTree_* rodata_p_reg(SyntaxTree_* tree, FILE* file)
             );
             strcat(sequence,"',0x9,'");
             x++;
+            if(str[x]=='\0') goto add_end;
           }
           if(str[x] == '\\') goto redo_;
         }
@@ -88,6 +89,7 @@ SyntaxTree_* rodata_p_reg(SyntaxTree_* tree, FILE* file)
             (strlen(sequence)+strlen(curr)+2)*sizeof(*sequence)
           );
           strcat(sequence,curr);
+          if(str[x+1]=='\0') goto add_end;
         } else goto add_end;
       }
       fprintf(file,"%s",sequence);

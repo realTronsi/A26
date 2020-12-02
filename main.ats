@@ -1,13 +1,12 @@
 @ {
-  $p[]
+  $p
 }
 p {
   "Hello\n"
   "My age is "
-  9
-}
-d {
-
+  999999999999999999999
+  "\n\t\t\t\t\t\t\t\t\t!"
 }
 
-; there is a problem the compiler wont compile this version and the old version keeps running as the assembly code
+
+; I started implementing the data register last night, that is the error.
