@@ -21,7 +21,7 @@ SyntaxTree_* compile(SyntaxTree_* tree)
   {
 
     // section .text
-    fprintf(file,"section .text\n\tglobal err\n\tglobal _start\n\t%%define sys_call int 0x80");
+    fprintf(file,"section .text\n\tglobal err\n\tglobal _start\n\t%%define sys_call int 0x80\n");
     int p_reg_index = -1, global_found = -1;
     for(int i = 0; i < tree->l_of_trees; i++)
     {
@@ -43,10 +43,10 @@ SyntaxTree_* compile(SyntaxTree_* tree)
           global_found = 0;
           break;
         }
+        //case TREE_D_REG: break;
         default: 
         {
-          fprintf(stderr,"\nCompilation Error\n");
-          exit(EXIT_FAILURE);
+          Exit();break;
         }
       }
     }
@@ -65,8 +65,7 @@ SyntaxTree_* compile(SyntaxTree_* tree)
           case TREE_GLB_REG: break;
           default:
           {
-            fprintf(stderr,"\nCompilation Error\n");
-            exit(EXIT_FAILURE);
+            Exit();break;
           }
         }
       }
@@ -104,8 +103,7 @@ SyntaxTree_* compile(SyntaxTree_* tree)
           }
           default:
           {
-            fprintf(stderr,"\nCompilation Error\n");
-            exit(EXIT_FAILURE);
+            Exit();break;
           }
         }
       }

@@ -9,7 +9,7 @@ typedef struct Token {
     UD, // #
     P_REG, //p
     GLB_REG, //@
-    D_REG, // d
+    D_Reg, // d
     O_REG, // o
     L_BR, // {
     R_BR, // }

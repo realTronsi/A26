@@ -14,10 +14,10 @@ typedef struct Parser {
 
 #include "glb_reg.h"
 #include "p_reg.h"
+#include "d_reg.h"
 
 Parser_* parser_init(Lexer_* lexer);
 void parse_token(Parser_* parser, int expected);
 SyntaxTree_* parse(Parser_* parser);
-SyntaxTree_* parse_string(Parser_* parser, SyntaxTree_* tree);
 
 #endif

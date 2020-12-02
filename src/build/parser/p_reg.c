@@ -31,8 +31,20 @@ SyntaxTree_* parse_p_reg(Parser_* parser)
               if(parser->curr_token->type == R_BR) goto end;
               goto redo;
             } else {
-              fprintf(stderr,"\nUnexpected token `%s`\n\t↳ %s:%d",parser->curr_token->val,parser->lexer->filename, parser->lexer->line);
-              tree->errors = 0;
+              int len = tree->p_reg_values->list_len;
+              for(int i = 0; i < len; i++)
+              {
+                blist_append(tree->p_reg_values,tree->p_reg_values->values[i]);
+              }
+              if(parser->curr_token->type == R_BK) parse_token(parser, R_BK);
+              else
+              {
+                fprintf(stderr,"\nSyntax Error:\n\t↳ Expected `]`\n\t%s:%d\n",parser->lexer->filename,parser->lexer->line);
+              }
+              if(parser->curr_token->type == R_BR) goto end;
+              goto redo;
+              //fprintf(stderr,"\nUnexpected token `%s`\n\t↳ %s:%d",parser->curr_token->val,parser->lexer->filename, parser->lexer->line);
+              //tree->errors = 0;
             }
           } else {
             fprintf(stderr, "\nCannot reference entire register inside itself\n\t↳ %s:%d\n", parser->lexer->filename, parser->lexer->line);

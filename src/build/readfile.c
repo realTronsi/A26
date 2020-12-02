@@ -15,7 +15,13 @@ char* read_file(char* filename){
           size*sizeof(*code)
         );
         fread(code,1,size,file);
+        fclose(file);
         return code;
+      } else
+      {
+        fclose(file);
+        fprintf(stderr,"\nError reading size of %s\n",filename);
+        exit(EXIT_FAILURE);
       }
   }
   

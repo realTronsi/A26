@@ -1,6 +1,13 @@
 @ {
-  $p
+  $p[]
 }
 p {
-  "hi\nhi\nhi\n\n\n\n"
+  "Hello\n"
+  "My age is "
+  9
 }
+d {
+
+}
+
+; there is a problem the compiler wont compile this version and the old version keeps running as the assembly code

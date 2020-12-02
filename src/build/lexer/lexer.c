@@ -165,7 +165,7 @@ Token_* next_token(Lexer_* lexer){
         return tokenize(lexer, "p", P_REG);break;
       }
       case '@':return tokenize(lexer,"@",GLB_REG);break;
-      case 'd':return tokenize(lexer,"d",D_REG); // added this.
+      case 'd':return tokenize(lexer,"d",D_Reg); // added this.
       case '{':return tokenize(lexer,"{",L_BR);break;
       case '}':return tokenize(lexer,"}",R_BR);break;
       case '[':return tokenize(lexer,"[",L_BK);break;

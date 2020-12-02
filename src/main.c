@@ -17,7 +17,7 @@ int main(int args, char* argv[])
     SyntaxTree_* tree = parse(parser);
     compile(tree);
 
-    free(lexer);
-    free(parser);
-    free(tree);
+    //free(lexer);
+    //free(parser);
+    //free(tree);
 }

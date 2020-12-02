@@ -11,6 +11,7 @@ typedef struct SyntaxTree {
     TREE_UD,
     TREE_P_REG,
     TREE_GLB_REG,
+    TREE_D_REG
   } TokenType;
 
   struct SyntaxTree** trees;

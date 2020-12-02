@@ -16,7 +16,7 @@ SyntaxTree_* rodata_glb_reg(SyntaxTree_* tree, int p_reg_index,FILE* file)
       for(int i = 0; i < tree->trees[p_reg_index]->p_reg_values->list_len; i++)
       {
         char* val = tree->trees[p_reg_index]->p_reg_values->values[i];
-        static int minus = 0;
+        int minus = 0;
         for(int x = 0; x < strlen(val); x++)
         {
           if(val[x] == '\\') minus++;
@@ -26,9 +26,15 @@ SyntaxTree_* rodata_glb_reg(SyntaxTree_* tree, int p_reg_index,FILE* file)
     }
     else
     {
-      if(!(atoi(tree->p_references_indexes->values[i]) >= tree->trees[p_reg_index]->p_reg_values->list_len))
+      if(!(atoi(tree->p_references_indexes->values[i]) >= tree->trees[p_reg_index]->p_reg_values->list_len) && !(atoi(tree->p_references_indexes->values[i]) < 0))
       {
-        fprintf(file,"\n\tmov ecx, p_msg_%d\n\tmov edx, %ld\n\tmov eax, 4\n\tmov ebx, 1\n\tsys_call\n",atoi(tree->p_references_indexes->values[i])+1,strlen(tree->trees[p_reg_index]->p_reg_values->values[atoi(tree->p_references_indexes->values[i])]));
+        int minus = 0;
+        char* val = tree->trees[p_reg_index]->p_reg_values->values[atoi(tree->p_references_indexes->values[i])];
+        for(int x = 0; x < strlen(val); x++)
+        {
+          if(val[x] == '\\') minus++;
+        }
+        fprintf(file,"\n\tmov ecx, p_msg_%d\n\tmov edx, %ld\n\tmov eax, 4\n\tmov ebx, 1\n\tsys_call\n",atoi(tree->p_references_indexes->values[i])+1,strlen(tree->trees[p_reg_index]->p_reg_values->values[atoi(tree->p_references_indexes->values[i])])-minus);
       }else
       {
         fprintf(file,"\n\tcall err");
