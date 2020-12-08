@@ -90,8 +90,8 @@ SyntaxTree_* compile(SyntaxTree_* tree)
           {
             if(p_reg_index != -1)
             {
-              rodata_glb_reg(tree, p_reg_index, file);
-              break;
+              rodata_glb_reg(tree->trees[i], p_reg_index, file,tree);
+              goto end;
             }
             if(tree->trees[i]->p_references_indexes->list_len > 0)
             {

@@ -71,26 +71,3 @@ p {
   9
 }
 ```
-
-# Tronsi comment: lol sounds like you're teaching a little kid, also your paragraphs are too long since this is just supposed to be a "mini docs"
-# Moca comment: lol sometimes I feel like I AM teaching a little kid xD
-
-The **p** register also offers a way for a user to reference a string that's already within in! This feature is called referencing.
-Example:
-```js
-p {
-  "bruh"
-  $p[0]
-}
-```
-
-The above will then evaluate so that the p register holds "bruh","bruh".
-
-Now, you can also "reference" the whole of the p register simply by having `$p[]`, as seen below:
-```js
-p {
-  "bruh"
-  $p[1] ; now "bruh","bruh"
-  $p[] ; now "bruh","bruh","bruh","bruh"
-}
-```

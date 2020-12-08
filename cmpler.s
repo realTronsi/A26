@@ -35,6 +35,17 @@ section .data ; storing all compiler messages
 	len equ $ - msg
 _start:
 
+	mov eax, 1
+	mov ebx, 0
+	sys_call
+
+section .rodata
+
+	; P REGISTER
+	p_msg_1 db 'Hello',0xa,''
+	p_msg_2 db 'My age is '
+	p_msg_3 db '999999999999999999999'
+	p_msg_4 db '',0xa,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'!'
 	mov ecx, p_msg_1
 	mov edx, 6
 	mov eax, 4
@@ -58,15 +69,3 @@ _start:
 	mov eax, 4
 	mov ebx, 1
 	sys_call
-
-	mov eax, 1
-	mov ebx, 0
-	sys_call
-
-section .rodata
-
-	; P REGISTER
-	p_msg_1 db 'Hello',0xa,''
-	p_msg_2 db 'My age is '
-	p_msg_3 db '999999999999999999999'
-	p_msg_4 db '',0xa,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'',0x9,'!'

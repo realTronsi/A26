@@ -128,8 +128,14 @@ char* get_str(Lexer_* lexer)
 
 void comment(Lexer_* lexer)
 {
+  redo:
   do {
-    if(lexer->curr_char == '\n') return next_char(lexer);
+    if(lexer->curr_char == '\n')
+    {
+      next_char(lexer);
+      if(lexer->curr_char == ';') goto redo;
+      return;
+    }
     if(lexer->curr_char == '\0') return;
     next_char(lexer);
   } while(1);
@@ -149,7 +155,10 @@ Token_* next_token(Lexer_* lexer){
         break;
       }
       if(lexer->curr_char == ';')
+      {
         comment(lexer);
+        if(lexer->curr_char == '\0') goto end;
+      }
       
     switch(lexer->curr_char){
       case 'p': {
@@ -200,5 +209,6 @@ Token_* next_token(Lexer_* lexer){
     next_char(lexer);
   } while (1);
 
+  end:
   return token_init("\0", Eof);
 }
